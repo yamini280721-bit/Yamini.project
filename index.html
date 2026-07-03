@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Science Quiz</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#1a1a2e;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    min-height:100vh;
+    padding:50px;
+}
+
+.container{
+    width:100%;
+    max-width:1000px;
+}
+
+.start-box,
+.quiz-box,
+.result-box{
+    background:#fff;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 15px rgba(0,0,0,0.3);
+}
+
+.quiz-box,
+.result-box{
+    display:none;
+}
+
+h1{
+    text-align:center;
+    color:#1e3c72;
+    margin-bottom:20px;
+}
+
+.input-field{
+    width:100%;
+    padding:15px;
+    margin:10px 0;
+    border:2px solid #ddd;
+    border-radius:8px;
+    font-size:18px;
+}
+
+.student-info{
+    background:#eef4ff;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.question-card{
+    border:2px solid #ddd;
+    border-radius:10px;
+    padding:20px;
+    margin-bottom:20px;
+}
+
+.question-card h3{
+    margin-bottom:15px;
+}
+
+.options{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+}
+
+.option-btn{
+    width:100%;
+    padding:12px;
+    text-align:center;
+    font-size:18px;
+    border:2px solid #1e3c72;
+    border-radius:8px;
+    background:white;
+    color:#1e3c72;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.option-btn:hover{
+    background:#1e3c72;
+    color:white;
+}
+
+.option-btn.selected{
+    background:#ff5722;
+    color:white;
+    border-color:#ff5722;
+}
+
+.btn{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#ff5722;
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+    margin-top:20px;
+}
+
+.btn:hover{
+    background:#e64a19;
+}
+
+.restart{
+    background:#7B3F00;
+}
+
+.restart:hover{
+    background:#388E3C;
+}
+
+.result-box{
+    text-align:center;
+}
+
+.score{
+    font-size:40px;
+    color:#6A0DAD;
+    margin:15px 0;
+    line-height:1.5;
+}
+
+.message{
+    font-size:30px;
+    color:#FF0000;
+
+}
+
+@media(max-width:768px){
+
+    body{
+        padding:20px;
+    }
+
+    .option-btn{
+        font-size:16px;
+    }
+
+    .btn{
+        font-size:18px;
+    }
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="start-box" id="startBox">
+
+<h1>💻 Computer Science Quiz</h1>
+
+<input
+type="text"
+id="studentName"
+class="input-field"
+placeholder="Enter Your Name">
+
+<input
+type="text"
+id="rollNo"
+class="input-field"
+placeholder="Enter Roll Number">
+
+<button class="btn" onclick="startQuiz()">
+Start Quiz
+</button>
+
+</div>
+
+<div class="quiz-box" id="quizBox">
+
+<h1>💻 Computer Science Quiz</h1>
+
+<div id="studentInfo" class="student-info"></div>
+
+<div id="allQuestions"></div>
+
+<button class="btn" onclick="submitQuiz()">
+Submit Quiz
+</button>
+
+</div>
+
+<div class="result-box" id="resultBox">
+
+<h1>🎉 Quiz Completed</h1>
+
+<div id="finalScore" class="score"></div>
+
+<div id="message" class="message"></div>
+
+<button class="btn restart" onclick="location.reload()">
+Restart Quiz
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const quizData=[
+
+{
+question:"What does CPU stand for?",
+options:[
+"Central Process Unit",
+"Central Processing Unit",
+"Computer Process Unit",
+"Central Program Utility"
+],
+answer:"Central Processing Unit"
+},
+
+{
+question:"Which data structure follows FIFO?",
+options:[
+"Stack",
+"Queue",
+"Tree",
+"Graph"
+],
+answer:"Queue"
+},
+
+{
+question:"Which language is used for webpage styling?",
+options:[
+"Java",
+"Python",
+"CSS",
+"C++"
+],
+answer:"CSS"
+},
+
+{
+question:"What is the brain of the computer?",
+options:[
+"RAM",
+"Monitor",
+"CPU",
+"ROM"
+],
+answer:"CPU"
+},
+
+{
+question:"Which is an Operating System?",
+options:[
+"Windows",
+"HTML",
+"Python",
+"Oracle"
+],
+answer:"Windows"
+},
+
+{
+question:"HTML stands for?",
+options:[
+"Hyper Text Markup Language",
+"High Text Machine Language",
+"Hyper Tool Machine Language",
+"Home Text Markup Language"
+],
+answer:"Hyper Text Markup Language"
+},
+
+{
+question:"Which memory is volatile?",
+options:[
+"ROM",
+"SSD",
+"RAM",
+"DVD"
+],
+answer:"RAM"
+},
+
+{
+question:"JavaScript file extension is?",
+options:[
+".java",
+".js",
+".jv",
+".script"
+],
+answer:".js"
+},
+
+{
+question:"Which sorting algorithm is efficient?",
+options:[
+"Bubble Sort",
+"Selection Sort",
+"Merge Sort",
+"Insertion Sort"
+],
+answer:"Merge Sort"
+},
+
+{
+question:"DBMS stands for?",
+options:[
+"Database Management System",
+"Data Backup Management System",
+"Digital Base Management System",
+"Database Machine System"
+],
+answer:"Database Management System"
+}
+
+];
+
+let studentName="";
+let studentRoll="";
+let score=0;
+
+const selectedAnswers=[];
+
+function startQuiz(){
+
+studentName=document.getElementById("studentName").value.trim();
+studentRoll=document.getElementById("rollNo").value.trim();
+
+if(studentName==="" || studentRoll===""){
+alert("Please enter Name and Roll Number");
+return;
+}
+
+document.getElementById("startBox").style.display="none";
+document.getElementById("quizBox").style.display="block";
+
+document.getElementById("studentInfo").innerHTML=
+`
+<h3>Name : ${studentName}</h3>
+<h3>Roll No : ${studentRoll}</h3>
+`;
+
+loadQuestions();
+
+}
+
+function loadQuestions(){
+
+let html="";
+
+quizData.forEach((q,index)=>{
+
+html+=`
+<div class="question-card">
+
+<h3>${index+1}. ${q.question}</h3>
+
+<div class="options">
+`;
+
+q.options.forEach(option=>{
+
+html+=`
+<button
+type="button"
+class="option-btn"
+onclick="selectOption(${index},this,'${option}')">
+${option}
+</button>
+`;
+
+});
+
+html+=`
+</div>
+
+</div>
+`;
+
+});
+
+document.getElementById("allQuestions").innerHTML=html;
+
+}
+
+function selectOption(questionIndex,button,answer){
+
+const buttons=button.parentElement.querySelectorAll(".option-btn");
+
+buttons.forEach(btn=>btn.classList.remove("selected"));
+
+button.classList.add("selected");
+
+selectedAnswers[questionIndex]=answer;
+
+}
+
+function submitQuiz(){
+
+score=0;
+
+quizData.forEach((q,index)=>{
+
+if(selectedAnswers[index]===q.answer){
+score++;
+}
+
+});
+
+showResult();
+
+}
+
+function showResult(){
+
+document.getElementById("quizBox").style.display="none";
+document.getElementById("resultBox").style.display="block";
+
+document.getElementById("finalScore").innerHTML=
+`
+Name : ${studentName}<br>
+Roll No : ${studentRoll}<br><br>
+Score : ${score} / ${quizData.length}
+`;
+
+let msg="";
+
+if(score===10){
+msg="🏆 Excellent! Perfect Score!";
+}
+else if(score>=8){
+msg="🌟 Outstanding Performance!";
+}
+else if(score>=6){
+msg="👍 Good Job!";
+}
+else if(score>=4){
+msg="😊 Nice Attempt!";
+}
+else{
+msg="📚 Keep Learning!";
+}
+
+document.getElementById("message").innerHTML=msg;
+
+}
+
+</script>
+
+</body>
+</html>
+
